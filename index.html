@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Focus</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- clock -->
+    <div class="hero">
+        <div class="container">
+            <div class="clock">
+                <span id="hrs">00</span>
+                <span>:</span>
+                <span id="min">00</span>
+                <span>:</span>
+                <span id="sec">00</span>
+            </div>
+        </div>
+        <!-- stopwatch -->
+        <div class="stopwatch">
+            <h1>Stopwatch</h1>
+            <p class="time">
+                <span id="minutes">00</span>:<span id="seconds">00</span>:<span id="tens">00</span>
+            </p>
+            <button id="start">Start</button>
+            <button id="stop">Stop</button>
+            <button id="reset">Reset</button>
+        </div>
+    </div>
+    <script>
+        let hrs = document.getElementById("hrs");
+        let min = document.getElementById("min");
+        let sec = document.getElementById("sec");
+
+        // digital clock
+        setInterval(() => {
+            let currentTime = new Date();
+            hrs.innerHTML = currentTime.getHours().toString().padStart(2, '0');
+            min.innerHTML = currentTime.getMinutes().toString().padStart(2, '0');
+            sec.innerHTML = currentTime.getSeconds().toString().padStart(2, '0');
+        }, 1000);
+
+        // stopwatch
+        window.onload = function () {
+            let minutes = 0;
+            let seconds = 0;
+            let tens = 0;
+
+            let appendMinutes = document.querySelector('#minutes');
+            let appendSeconds = document.querySelector('#seconds');
+            let appendTens = document.querySelector('#tens');
+            let startBtn = document.querySelector('#start');
+            let stopBtn = document.querySelector('#stop');
+            let resetBtn = document.querySelector('#reset');
+
+            let Interval;
+
+            const updateDisplay = () => {
+                appendMinutes.innerHTML = minutes.toString().padStart(2, "0");
+                appendSeconds.innerHTML = seconds.toString().padStart(2, "0");
+                appendTens.innerHTML = tens.toString().padStart(2, "0");
+            };
+
+            const startTimer = () => {
+                tens++;
+                if (tens > 99) {
+                    seconds++;
+                    tens = 0;
+                }
+                if (seconds > 59) {
+                    minutes++;
+                    seconds = 0;
+                }
+                updateDisplay();
+            };
+
+            startBtn.onclick = () => {
+                clearInterval(Interval);
+                Interval = setInterval(startTimer, 10);
+            };
+
+            stopBtn.onclick = () => {
+                clearInterval(Interval);
+            };
+
+            resetBtn.onclick = () => {
+                clearInterval(Interval);
+                tens = 0;
+                seconds = 0;
+                minutes = 0;
+                updateDisplay();
+            };
+        };
+    </script>
+
+</body>
+
+</html>
